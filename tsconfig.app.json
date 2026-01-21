@@ -1,0 +1,38 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "env.d.ts",
+    "src/components/drawer.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "scripts/**/*"
+  ],
+  "exclude": [
+    "src/**/__tests__/*",
+    "dist",
+    "node_modules",
+    "cypress"
+  ],
+  "compilerOptions": {
+    "lib": [
+      "DOM",
+      "dom.iterable",
+      "scripthost",
+      "ESNext"
+    ],
+    "verbatimModuleSyntax": false,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": false,
+    "noUnusedLocals": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  }
+}
