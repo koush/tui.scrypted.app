@@ -116,6 +116,7 @@ watch(() => terminal.value, () => {
     return;
   term.open(terminal.value);
   fitAddon.fit();
+  term.focus();
   if (activeDeviceId.value) {
     connectPty();
   }
