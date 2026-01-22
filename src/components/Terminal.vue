@@ -4,12 +4,12 @@
     <div style="opacity: 0.5;">Select a terminal session</div>
   </div>
   <div v-else style="width: 100%; height: 100%; display: flex; flex-direction: column;">
-    <Teleport to="#app-title-portal">
+    <Teleport to="#app-title-portal" v-if="activeDeviceId === route.params.deviceId">
       <v-app-bar-title class="text-subtitle-2 text-uppercase" style="margin-top: 2px;">
         {{ activeDevice?.name || 'Loading...' }}
       </v-app-bar-title>
     </Teleport>
-    <Teleport to="#app-title-buttons">
+    <Teleport to="#app-title-buttons" v-if="activeDeviceId === route.params.deviceId">
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
           <v-btn v-bind="props" icon size="small" variant="text" @click="copyLog">
@@ -34,8 +34,8 @@
 <script setup lang="ts">
 import { connectPluginClient, connectedClient } from '@/common/client';
 import { isDark } from '@/common/colors';
-import { observeResize } from '@/common/resize-observer';
 import { getFaPrefix } from '@/common/fa-prefix';
+import { observeResize } from '@/common/resize-observer';
 import { createAsyncQueue, createAsyncQueueFromGenerator } from "@scrypted/common/src/async-queue";
 import { Deferred } from "@scrypted/common/src/deferred";
 import { sleep } from "@scrypted/common/src/sleep";
@@ -43,7 +43,7 @@ import { StreamService } from '@scrypted/types';
 import { FitAddon } from '@xterm/addon-fit';
 import { Terminal } from '@xterm/xterm';
 import debounce from 'lodash/debounce';
-import { onUnmounted, ref, watch, computed, onMounted } from 'vue';
+import { computed, onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
