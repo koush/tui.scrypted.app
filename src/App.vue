@@ -9,10 +9,12 @@
     <AppBar v-model="drawer"></AppBar>
     <Drawer v-if="showDrawer" v-model="drawer" style=" top: 0; height: 100% !important;"></Drawer>
     <v-main style="padding-top: 64px !important;">
-      <router-view v-slot="{ Component }" style="width: 100%; height: 100%;">
-        <v-fade-transition>
-          <component :is="Component" />
-        </v-fade-transition>
+      <router-view v-slot="{ Component, route }" style="width: 100%; height: 100%;">
+        <transition name="fade" mode="out-in">
+          <KeepAlive :max="10">
+            <component :is="Component" :key="(route.path.startsWith('/terminal/') ? route.path : route.name)" />
+          </KeepAlive>
+        </transition>
       </router-view>
       <v-snackbar color="warning" :model-value="!connectedClient" :timeout="-1" close-on-content-click>
         <div style="display: flex; justify-content: center;">

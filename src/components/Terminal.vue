@@ -1,5 +1,6 @@
 <template>
-  <div v-if="!activeDeviceId" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+  <div v-if="!activeDeviceId"
+    style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
     <div style="opacity: 0.5;">Select a terminal session</div>
   </div>
   <div v-else style="width: 100%; height: 100%; display: flex; flex-direction: column;">
@@ -42,11 +43,18 @@ import { StreamService } from '@scrypted/types';
 import { FitAddon } from '@xterm/addon-fit';
 import { Terminal } from '@xterm/xterm';
 import debounce from 'lodash/debounce';
-import { onUnmounted, ref, watch, computed } from 'vue';
+import { onUnmounted, ref, watch, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const activeDeviceId = computed(() => route.params.deviceId?.toString());
+const activeDeviceId = ref(route.params.deviceId?.toString());
+watch(() => route.params.deviceId, () => {
+  if (route.params.deviceId === activeDeviceId.value) {
+    setTimeout(() => {
+      term.focus();
+    }, 200);
+  }
+});
 
 const activeDevice = computed(() => {
   if (!activeDeviceId.value || !connectedClient.value) {
@@ -94,6 +102,7 @@ unmounted.promise.then(() => {
   window.removeEventListener('resize', terminalResize);
   term.dispose();
 });
+
 
 let localQueue: ReturnType<typeof createAsyncQueueFromGenerator>;
 let connectionId = 0;
