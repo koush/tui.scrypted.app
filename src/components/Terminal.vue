@@ -104,6 +104,7 @@ function refreshOnUpdate() {
   localQueue = undefined;
   if (terminal.value) {
     term.clear();
+    term.focus();
   }
   buffer = [];
   connectPty();
